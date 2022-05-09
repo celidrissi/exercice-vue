@@ -1,18 +1,20 @@
 # Prestashop exercice
 
-## Mise en place :
+## Mise en place
 
 ## Install with Yarn
 
+yarn install
 yarn global add @quasar/cli
 
 ## or install with NPM
 
-npm install -g @quasar/cli
+npm i
+npm i -g @quasar/cli
 
-## Exercice :
+## Exercice
 
-# N'hésitez pas à refondre et changer tout ce qui vous semble mauvais !!!
+### N'hésitez pas à refondre et changer tout ce qui vous semble mauvais
 
 1. Créer un magasin, module, Vuex avec le namespace "tasks" pour les plats
    dans src/store/ et y ajouter le tableau des dishes.
@@ -24,7 +26,7 @@ npm install -g @quasar/cli
    en utilisant des actions et des mutations.
    Afficher une dialog de confirmation avant de supprimer.
 
-4. Ajouter une validation au formulaire src/components/FormDishes.vue - nom: obligatoire avec un maximum de 20 caractères. - description: maximum de 135 caractères. - La validation doit être déclenchée lorsque l'on clique sur Sauvegarder
+4. Ajouter une validation au formulaire src/components/FormDishes.vue - nom: obligatoire avec un maximum de 20 caractères. - description: maximum de 150 caractères. - La validation doit être déclenchée lorsque l'on clique sur Sauvegarder
 
 5. Ajouter la possibilité d'ajouter un élément
    indice: utiliser l'attribut "action" pour différencier l'ajout de la modification

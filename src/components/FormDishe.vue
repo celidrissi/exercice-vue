@@ -1,12 +1,20 @@
 <template>
   <q-card class="form-card">
     <q-card-section>
-      <div class="text-h6 heading">{{ action }} Plat</div>
+      <div class="text-h6 heading">{{ action === 'edit' ? "Modifier" : "Ajouter" }} Plat</div>
     </q-card-section>
 
     <q-card-section>
       <div class="row q-mb-md">
-        <q-input filled v-model="dishe.name" label="Nom (Burger)" class="col" />
+        <q-input 
+          filled
+          v-model="dishe.name"
+          label="Nom" 
+          class="col" 
+          hint="Max 20 caractères"
+          error-message = "Veuillez entrer un nom de plat valide (Max 20 caractères)"
+          :error="errors.name"
+        />
       </div>
 
       <div class="row q-mb-md">
@@ -16,6 +24,9 @@
           label="Description"
           type="textarea"
           class="col"
+          :hint="dishe.description.length + ' / ' + policy.description.max + ' caractères'"
+          :error-message = "'Veuillez entrer une description valide (Max ' + policy.description.max + ' caractères)'"
+          :error="errors.description"
         />
       </div>
 
@@ -44,25 +55,46 @@
     </q-card-section>
 
     <q-card-actions align="right">
-      <q-btn label="Annuler" color="grey" v-close-popup />
-      <q-btn label="Sauver" color="primary" v-close-popup />
+      <q-btn label="Annuler" type="abort" color="grey" v-close-popup/>
+      <q-btn @click="validate"  label="Sauvegarder" type="submit" color="primary"/>
     </q-card-actions>
   </q-card>
 </template>
 
 <script>
+import { ref } from "@vue/composition-api";
+import { disheValidator } from "../composition/disheValidator";
+import { save } from "../composition/save";
+
 export default {
-  props: ["action"],
-  data() {
+  props: {
+    action : String, 
+    current_dishe : Object
+  },
+  setup(props) {
+    const dishe = ref({
+      id: null,
+      image: "",
+      name: "",
+      description: "",
+      note: 0
+    });
+
+    const [errors, policy, validate] = disheValidator(dishe);
+
     return {
-      dishe: {
-        name: "",
-        description: "",
-        note: 1,
-        image: ""
-      }
-    };
-  }
+      dishe, errors, policy, validate, save
+    }
+  },
+  mounted() {
+    if (this.action === "edit") {
+      this.dishe.id = this.current_dishe.id;
+      this.dishe.name = this.current_dishe.name;
+      this.dishe.description = this.current_dishe.description;
+      this.dishe.image = this.current_dishe.image;
+      this.dishe.note = this.current_dishe.note;
+    }
+  },
 };
 </script>
 
