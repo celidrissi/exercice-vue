@@ -48,14 +48,12 @@
 </template>
 
 <script>
-import { ref } from "@vue/composition-api";
 export default {
   props: ["dishe"],
-  setup(props) {
-    var showFormDishe = ref(false);
-    var confirm = ref(false);
+  data() {
     return {
-      showFormDishe, confirm
+      showFormDishe: false,
+      confirm: false
     };
   },
   components: {

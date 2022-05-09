@@ -4,7 +4,6 @@ import tasks from "./tasks";// Importer votre module ici et l'ajouter au Store (
 import VueCompositionApi from "@vue/composition-api";
 
 Vue.use(Vuex);
-Vue.use(VueCompositionApi);
 
 /*
  * If not building with SSR mode, you can

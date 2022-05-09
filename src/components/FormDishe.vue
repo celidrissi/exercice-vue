@@ -62,28 +62,66 @@
 </template>
 
 <script>
-import { ref } from "@vue/composition-api";
-import { disheValidator } from "../composition/disheValidator";
-import { save } from "../composition/save";
-
 export default {
   props: {
     action : String, 
     current_dishe : Object
   },
-  setup(props) {
-    const dishe = ref({
-      id: null,
-      image: "",
-      name: "",
-      description: "",
-      note: 0
-    });
-
-    const [errors, policy, validate] = disheValidator(dishe);
-
+  data() {
     return {
-      dishe, errors, policy, validate, save
+      dishe: {
+        id: null,
+        image: "",
+        name: "",
+        description: "",
+        note: 0
+      },
+      errors: {
+        name: false,
+        description: false
+      },
+      policy: {
+        name: {
+          required: true,
+          max: 20
+        },
+        description: {
+          required: false,
+          max: 250
+        },
+        image: {
+          required: true,
+        }
+      }
+    };
+  },
+  methods: {
+    validate() {
+      this.errors.name = false;
+      this.errors.description = false;
+      if (this.policy.name.required && !this.dishe.name || this.dishe.name.length > this.policy.name.max) {
+        this.errors.name = true;
+      }
+      if (this.policy.description.required && !this.dishe.description || this.dishe.description.length > this.policy.description.max) {
+        this.errors.description = true;
+      }
+
+      if (this.policy.image.required && !this.dishe.image) {
+        this.dishe.image = "statics/image-placeholder.png";
+      }
+
+      if (this.errors.name || this.errors.description) return false;
+      
+      this.save();
+    },
+    save(){
+      if (this.action === "edit") {
+        this.$store.dispatch("tasks/updateDishe", this.dishe);
+      } else {
+        this.$store.dispatch("tasks/addDishe", this.dishe);
+      }
+      
+      this.$emit('close');
     }
   },
   mounted() {
